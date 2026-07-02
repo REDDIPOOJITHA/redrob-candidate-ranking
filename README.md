@@ -6,8 +6,8 @@
 
 ```bash
 pip install -r requirements.txt
-python rank.py --candidates ./candidates.jsonl --out ./submission.xlsx
-python validate_submission.py submission.xlsx
+python rank.py --candidates ./candidates.jsonl --out ./Top100.xlsx
+python validate_submission.py Top100.xlsx
 ```
 
 Runs in ~100 seconds on 16GB CPU. No GPU. No network calls during ranking.
@@ -63,7 +63,7 @@ app.py                         ← Streamlit sandbox
 requirements.txt
 validate_submission.py
 submission_metadata.yaml
-outputs/submission.xlsx        ← submitted XLSX
+outputs/Top100.xlsx        ← submitted XLSX
 data/sample_candidates.jsonl  ← 20-candidate sandbox sample
 src/
   main.py                      ← orchestrates load → score → filter → rank → write
