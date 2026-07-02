@@ -1,0 +1,100 @@
+# Redrob Hackathon — Submission Metadata Template
+#
+# Copy this file to your repo root as `submission_metadata.yaml` and fill it in.
+# The fields here should match what you submit via the portal at upload time.
+# Stage 3 review uses this file to verify your portal metadata.
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "Reprob_next_gen"  # Used in leaderboard and announcements
+
+primary_contact:
+  name: "Sharmila Dharmireddi"
+  email: "TODO_FILL_YOUR_EMAIL"   # Used for all organizer communication
+  phone: "TODO_FILL_YOUR_PHONE"   # Used for top-50 / top-10 outreach
+
+team_members:
+  - name: "Sharmila Dharmireddi"
+    email: "TODO_FILL_YOUR_EMAIL"
+    role: "Team Lead"          # Optional, e.g. "Team Lead", "Backend", "Data"
+  # TODO: add any other teammates here (name, email, role)
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "TODO_PASTE_YOUR_PUBLIC_GITHUB_URL"
+# Required. Must be reachable. Private repos OK if you can grant organizer
+# access at Stage 3 (the email to add will be communicated then).
+
+sandbox_link: "TODO_PASTE_YOUR_STREAMLIT_URL"
+# Required. A working hosted environment where the ranker can be run on a small
+# candidate sample. See Section 10.5 of submission_spec.md for acceptable
+# platforms (HuggingFace Spaces, Streamlit Cloud, Replit, Colab, Docker, Binder).
+
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
+# The single command that produces submission.csv from candidates.jsonl.
+# Should run end-to-end within 5 minutes on CPU with 16GB RAM and no network.
+
+# ============================================================================
+# Compute environment
+# ============================================================================
+compute:
+  platform: "TODO_YOUR_MACHINE e.g. Local Windows/Mac laptop"
+  cpu_cores: 8                                  # TODO: fill your actual core count
+  ram_gb: 16                                    # TODO: fill your actual RAM
+  python_version: "3.11"                        # TODO: run `python --version` and fill
+  os: "TODO e.g. Windows 11 / Ubuntu 22.04 / macOS 14"
+  uses_gpu_for_inference: false                 # false — confirmed, TF-IDF only, no GPU used
+  has_network_during_ranking: false             # false — confirmed, no API calls during rank.py
+  pre_computation_required: false               # false — no offline pre-computed embeddings
+  pre_computation_time_minutes: 0
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+# Transparency only — declared use is NOT penalized. Be honest. Stage 5 interview
+# may verify these declarations against your code; declarations that contradict
+# your code or your interview are flagged.
+ai_tools_used:
+  - "Claude"        # e.g. for architecture discussion, code review
+  - "GitHub Copilot"  # e.g. for autocomplete
+  # Other options: "ChatGPT", "Cursor", "Gemini", "Codeium", "Other", "None"
+
+ai_usage_summary: |
+  Used Claude to draft, debug, and refactor the ranking pipeline (scoring
+  modules, TF-IDF semantic matcher, honeypot/title filters, reasoning
+  generator) and to review the code for correctness against the JD. All
+  design decisions (signal weights, filters, output format) were reviewed
+  and approved by the team. No candidate data was sent to any external
+  LLM API — ranking itself runs offline with scikit-learn only.
+
+# ============================================================================
+# Approach summary (optional but recommended)
+# ============================================================================
+methodology_summary: |
+  Eight-signal weighted ranker for a Senior AI Engineer JD (embeddings,
+  retrieval, ranking, production LLM/RAG work). Semantic match (30%) uses
+  TF-IDF + cosine similarity over profile/skills/career text — no network
+  calls, no model download, scores 100K candidates in under a minute on
+  CPU. Career relevance (20%) is the key differentiator: it parses each
+  job description for duration-weighted, ownership-language-scored
+  evidence of real retrieval/ranking work (led/built > contributed to >
+  familiar with), so a candidate who only lists "RAG, Pinecone" as a skill
+  tag without matching career-history evidence scores near zero on this
+  signal. Remaining signals cover company quality (product vs. services),
+  experience-curve fit, skill-proficiency match, recency-gated behavioral
+  availability, location, and platform assessment scores. Hard filters
+  remove off-domain titles and honeypot profiles (inconsistent experience,
+  implausibly perfect signals). Every row's reasoning string is built only
+  from fields present on that candidate — no hallucinated justifications.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true        # I have read submission_spec.md in full
+  code_is_original_work: true       # My code is my team's original work (using AI as a tool is fine)
+  no_collusion: true                # I have not coordinated my submission with other teams
+  honeypot_check_done: false        # OPTIONAL — set true if you explicitly checked for honeypots in your ranking
+  reproduction_tested: true         # I have tested that my reproduce_command runs end-to-end
