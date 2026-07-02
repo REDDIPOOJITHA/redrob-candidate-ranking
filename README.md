@@ -20,6 +20,10 @@ streamlit run app.py
 
 Upload any `.jsonl` file with up to 100 candidates, or click **Use bundled sample**.
 
+**The full candidates.jsonl dataset (464 MB) is not included in the repository due to GitHub file size limits. Place the dataset locally and run:**
+
+python rank.py --candidates candidates.jsonl --out outputs/submission.xlsx
+
 ## Architecture
 
 Eight signals, each in its own module:
